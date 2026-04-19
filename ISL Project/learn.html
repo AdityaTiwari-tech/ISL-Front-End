@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Learn | ISL Smart Communicator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="nav-links">
+      <a href="index.html">HOME</a>
+      <a href="about.html">ABOUT US</a>
+      <a href="learn.html">LEARN</a>
+      <a href="#">FAQ</a>
+      <a href="#">CONTACT US</a>
+    </div>
+    <div class="nav-icons">
+      <button class="toggle-btn" id="modeToggle">🌗 DARK</button>
+      <div class="profile-icon">👤</div>
+    </div>
+  </nav>
+  <section class="learn-section">
+    <h1>Learn Section - Via Speech Tools</h1>
+  
+    <div class="speech-to-text">
+      <h2>🎙️ Speak to Text</h2>
+      <button onclick="startListening()">Start Listening</button>
+      <p id="sttOutput">Your speech will appear here...</p>
+    </div>
+  
+    <hr>
+  
+    <div class="text-to-speech">
+      <h2>🗣️ Text to Speech</h2>
+      <textarea id="ttsInput" rows="4" cols="50" placeholder="Type something to read aloud..."></textarea><br>
+      <button onclick="speakText()">Speak</button>
+    </div>
+  </section>
+  
+  <section class="learn-section">
+    <h1>Learn</h1>
+    <div class="learn-cards">
+      <div class="learn-card">
+        <img src="https://via.placeholder.com/300x180/CCEEFF/333?text=Essentials+Handbook" alt="Essentials handbook">
+        <h3>Essentials handbook</h3>
+        <p>Give your audience a short description of this resource.</p>
+        <button class="read-btn">READ MORE</button>
+      </div>
+      <div class="learn-card">
+        <img src="https://via.placeholder.com/300x180/D4FFC9/333?text=Training+Journal" alt="Training journal">
+        <h3>Training journal</h3>
+        <p>Give your audience a short description of this resource.</p>
+        <button class="read-btn">READ MORE</button>
+      </div>
+      <div class="learn-card">
+        <img src="https://via.placeholder.com/300x180/ADBFFF/333?text=Modules" alt="Modules">
+        <h3>Modules</h3>
+        <p>Give your audience a short description of this resource.</p>
+        <button class="read-btn">READ MORE</button>
+      </div>
+    </div>
+  </section>
+
+  <script src="script.js"></script>
+
+  <script>
+    // --- Speech to Text (STT) ---
+    let recognition;
+    function startListening() {
+      if (!('webkitSpeechRecognition' in window)) {
+        alert('Speech Recognition not supported. Try using Chrome browser.');
+        return;
+      }
+  
+      recognition = new webkitSpeechRecognition();
+      recognition.lang = 'en-IN'; // you can set 'hi-IN' for Hindi, 'mr-IN' for Marathi
+      recognition.continuous = false;
+      recognition.interimResults = false;
+  
+      recognition.start();
+  
+      recognition.onresult = function(event) {
+        const speechResult = event.results[0][0].transcript;
+        document.getElementById('sttOutput').innerText = speechResult;
+      };
+  
+      recognition.onerror = function(event) {
+        alert('Error occurred in recognition: ' + event.error);
+      };
+    }
+  
+    // --- Text to Speech (TTS) ---
+    function speakText() {
+      const text = document.getElementById('ttsInput').value;
+      if (!text) {
+        alert('Please type something first!');
+        return;
+      }
+  
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-IN'; // you can change this as per language
+      window.speechSynthesis.speak(utterance);
+    }
+  </script>
+  
+</body>
+</html>
